@@ -19,6 +19,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     await tasksListRender(idUser);
     await tasksListeners(idUser);
+
+    const { default: assignTaskModalListeners } = await import(
+      "../listeners/assignTaskModalListeners"
+    );
+    await assignTaskModalListeners(idUser);
   } catch (error) {
     console.error("Falha ao carregar tarefas:", error);
     clearUserId();

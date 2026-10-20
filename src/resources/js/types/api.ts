@@ -25,6 +25,16 @@ export interface Task {
   id_user: number;
 }
 
+export interface UserSearchFilters {
+  name?: string;
+  email?: string;
+  job_title?: string;
+  bio?: string;
+  city?: string;
+  state?: string;
+  is_active?: boolean;
+}
+
 // ── Generics para respostas de API ──────────────────────────
 
 /**

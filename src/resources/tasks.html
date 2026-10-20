@@ -27,9 +27,75 @@
       <h5>Nova Tarefa</h5>
       <input type="text" id="task-input" class="form-control" placeholder="Digite a tarefa..." />
       <button id="add-task-btn" class="btn btn-primary" type="button">Adicionar</button>
+      <button
+        id="open-assign-modal"
+        class="btn btn-outline-primary"
+        type="button"
+        data-bs-toggle="modal"
+        data-bs-target="#assign-task-modal"
+      >
+        Nova tarefa para outro usuário
+      </button>
     </section>
 
   </main>
+
+  <div class="modal fade" id="assign-task-modal" tabindex="-1" aria-labelledby="assign-task-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <form id="assign-task-form">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="assign-task-title">Nova tarefa para outro usuário</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+
+          <div class="modal-body">
+            <label for="assign-task-name" class="form-label">Nome da tarefa</label>
+            <input
+              id="assign-task-name"
+              class="form-control mb-3"
+              type="text"
+              placeholder="Digite o nome da tarefa"
+              required
+            />
+
+            <label for="assign-search-field" class="form-label">Buscar usuário por</label>
+            <div class="input-group mb-3">
+              <select id="assign-search-field" class="form-select" aria-label="Campo da busca">
+                <option value="name">Nome</option>
+                <option value="email">E-mail</option>
+                <option value="job_title">Cargo</option>
+                <option value="city">Cidade</option>
+                <option value="state">UF</option>
+                <option value="bio">Bio</option>
+              </select>
+              <input
+                id="assign-search-value"
+                class="form-control"
+                type="search"
+                placeholder="Digite para buscar"
+                aria-label="Texto da busca"
+              />
+              <button id="assign-search-btn" class="btn btn-outline-primary" type="button">Buscar</button>
+            </div>
+
+            <div id="assign-search-results" aria-live="polite"></div>
+            <div id="assign-selected-user" class="mt-3" aria-live="polite"></div>
+            <div id="assign-task-message" class="d-none mt-3" role="alert"></div>
+          </div>
+
+          <div class="modal-footer">
+            <button id="assign-task-cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+            <button id="assign-task-submit" type="submit" class="btn btn-primary" disabled>
+              Criar tarefa
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
   <footer class="bg-primary text-white text-center py-3 mt-auto">
     <div class="small">Frontend 2026.2</div>
