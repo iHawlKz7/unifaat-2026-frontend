@@ -1,44 +1,41 @@
 import type { Task } from "../types/api";
 import type { TaskListItemElement } from "../types/dom";
-
-// TODO (TF): Importar taskToggleHandler e taskDeleteHandler
-// import taskToggleHandler from "../listeners/taskToggleHandler";
-// import taskDeleteHandler from "../listeners/taskDeleteHandler";
+import taskToggleHandler from "../listeners/taskToggleHandler";
+import taskDeleteHandler from "../listeners/taskDeleteHandler";
+import taskEditHandler from "../listeners/taskEditHandler";
 
 export default function taskRender(task: Task, idUser: number): TaskListItemElement {
-  const liElement = document.createElement("li") as TaskListItemElement;
-  liElement.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-  liElement.taskId = task.id;
-  liElement.userId = idUser;
+  const li = document.createElement('li') as TaskListItemElement;
+  li.classList.add('list-group-item', 'd-flex', 'align-items-center', 'gap-2');
+  li.taskId = task.id;
+  li.userId = idUser;
 
-  const nameElement = document.createElement("span");
-  nameElement.innerText = task.name;
-  nameElement.classList.add("flex-grow-1");
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.classList.add('form-check-input');
+  checkbox.checked = task.is_done;
+  checkbox.setAttribute('aria-label', `Concluir ${task.name}`);
+  checkbox.addEventListener('change', taskToggleHandler);
 
-  liElement.append(nameElement);
+  const name = document.createElement('span');
+  name.classList.add('task-name', 'flex-grow-1');
+  name.innerText = task.name;
+  if (task.is_done) {
+    name.classList.add('text-decoration-line-through', 'text-muted');
+  }
 
-  // TODO (TF): Adicionar checkbox para marcar concluída
-  /*
-    const checkboxElement = document.createElement("input");
-    checkboxElement.type = "checkbox";
-    checkboxElement.classList.add("form-check-input");
-    checkboxElement.checked = task.is_done;
-    checkboxElement.addEventListener("change", taskToggleHandler);
-    liElement.prepend(checkboxElement);
+  const edit = document.createElement('button');
+  edit.type = 'button';
+  edit.classList.add('btn', 'btn-outline-primary', 'btn-sm', 'task-edit');
+  edit.innerText = 'Editar';
+  edit.addEventListener('click', taskEditHandler);
 
-    if (task.is_done) {
-        nameElement.classList.add("text-decoration-line-through", "text-muted");
-    }
-    */
+  const remove = document.createElement('button');
+  remove.type = 'button';
+  remove.classList.add('btn', 'btn-danger', 'btn-sm');
+  remove.innerText = 'Excluir';
+  remove.addEventListener('click', taskDeleteHandler);
 
-  // TODO (TF): Adicionar botão Excluir
-  /*
-    const buttonDeleteElement = document.createElement("button");
-    buttonDeleteElement.classList.add("btn", "btn-danger", "btn-sm");
-    buttonDeleteElement.innerText = "Excluir";
-    buttonDeleteElement.addEventListener("click", taskDeleteHandler);
-    liElement.append(buttonDeleteElement);
-    */
-
-  return liElement;
+  li.append(checkbox, name, edit, remove);
+  return li;
 }

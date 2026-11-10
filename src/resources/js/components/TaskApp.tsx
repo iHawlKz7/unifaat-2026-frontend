@@ -45,7 +45,7 @@ export function TaskApp({ idUser, userName, initialTasks }: TaskAppProps) {
 
     // U: update (marcar/desmarcar como feita)
     async function toggle(task: Task) {
-        const updated = await taskUpdateApi(idUser, task.id, { is_done: !task.is_done })
+        const updated = await taskUpdateApi(task.id, { is_done: !task.is_done })
         setTasks(current => current.map(item => {
             if (item.id !== updated.id) return item
             return updated
@@ -54,7 +54,7 @@ export function TaskApp({ idUser, userName, initialTasks }: TaskAppProps) {
 
     // D: delete
     async function remove(id: number) {
-        await taskDeleteApi(idUser, id)
+        await taskDeleteApi(id)
         setTasks(current => current.filter(task => task.id !== id))
     }
 

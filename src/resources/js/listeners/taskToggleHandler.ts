@@ -1,19 +1,18 @@
-import tasksListRender from "../render/tasksListRender";
+import tasksListRender, { getCurrentTaskPage } from "../render/tasksListRender";
 import { taskUpdateApi } from "../api/taskUpdateApi";
 import type { TaskListItemElement } from "../types/dom";
 
 export default async function taskToggleHandler(event: Event): Promise<void> {
-  const liElement = (event.target as HTMLElement).closest("li") as TaskListItemElement | null;
-  if (!liElement) return;
-
-  const { userId: idUser, taskId } = liElement;
-  const isDone = (event.target as HTMLInputElement).checked;
+  const input = event.currentTarget as HTMLInputElement;
+  const li = input.closest('li') as TaskListItemElement | null;
+  if (!li) return;
 
   try {
-    await taskUpdateApi(idUser, taskId, { is_done: isDone });
-    await tasksListRender(idUser);
+    await taskUpdateApi(li.taskId, { is_done: input.checked });
+    await tasksListRender(li.userId, getCurrentTaskPage());
   } catch (error) {
-    alert("Erro ao atualizar tarefa");
     console.error(error);
+    input.checked = !input.checked;
+    alert('Erro ao atualizar tarefa');
   }
 }

@@ -1,17 +1,16 @@
-import tasksListRender from "../render/tasksListRender";
+import tasksListRender, { getCurrentTaskPage } from "../render/tasksListRender";
 import { taskDeleteApi } from "../api/taskDeleteApi";
 import type { TaskListItemElement } from "../types/dom";
 
 export default async function taskDeleteHandler(event: Event): Promise<void> {
-  const liElement = (event.target as HTMLElement).closest("li") as TaskListItemElement | null;
-  if (!liElement) return;
-
-  const { userId: idUser, taskId } = liElement;
+  const li = (event.currentTarget as HTMLElement).closest('li') as TaskListItemElement | null;
+  if (!li) return;
 
   try {
-    await taskDeleteApi(idUser, taskId);
-    await tasksListRender(idUser);
+    await taskDeleteApi(li.taskId);
+    await tasksListRender(li.userId, getCurrentTaskPage());
   } catch (error) {
     console.error(error);
+    alert('Erro ao excluir tarefa');
   }
 }
